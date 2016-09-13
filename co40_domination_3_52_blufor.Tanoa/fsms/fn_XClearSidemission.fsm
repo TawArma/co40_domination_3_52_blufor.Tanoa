@@ -1,0 +1,75 @@
+class FSM
+{
+  fsmName = "XClearSidemission";
+  class States
+  {
+    class Start
+    {
+      name = "Start";
+      init = "private _waittime = time + 200 + random 10;" \n
+       "if (d_MissionType != 2) then {" \n
+       "	private _num_p = call d_fnc_PlayersNumber;" \n
+       "	if (_num_p > 0) then {" \n
+       "		{" \n
+       "			if (_num_p <= (_x select 0)) exitWith {" \n
+       "				_waittime = time + (_x select 1) + random 10;" \n
+       "			}" \n
+       "		} forEach d_time_until_next_sidemission;" \n
+       "	};" \n
+       "};" \n
+       "";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Clear_and_End";
+          precondition = "";
+          condition="time > _waittime";
+          action="";
+        };
+      };
+    };
+    class Clear_and_End
+    {
+      name = "Clear_and_End";
+      init = "{" \n
+       "	if !(isNull _x) then {" \n
+       "		if (_x isKindOf ""House"") then {" \n
+       "			_position = getPosASL _x;" \n
+       "			_ruin = nearestObject [[_position select 0, _position select 1, 0], ""Ruins""];" \n
+       "			if (!isNull _ruin) then {" \n
+       "				 (getPosATL _ruin) remoteExecCall [""d_fnc_delruin""];" \n
+       "				deleteVehicle _ruin;" \n
+       "			};" \n
+       "			deleteVehicle _x;" \n
+       "		} else {" \n
+       "			if (_x isKindOf ""LandVehicle"" && {!((crew _x) isEqualTo [])}) then {" \n
+       "				if ({isPlayer _x && {alive _x}} count (crew _x) == 0) then {" \n
+       "					_x call d_fnc_DelVecAndCrew;" \n
+       "				};" \n
+       "			} else {" \n
+       "				deleteVehicle _x" \n
+       "			};" \n
+       "		};" \n
+       "	};" \n
+       "} forEach d_x_sm_vec_rem_ar;" \n
+       "d_x_sm_vec_rem_ar = nil;" \n
+       "d_x_sm_vec_rem_ar = [];" \n
+       "{if !(isNull _x) then {deleteVehicle _x}} forEach d_x_sm_rem_ar;" \n
+       "d_x_sm_rem_ar = nil;" \n
+       "d_sm_resolved = false;" \n
+       "0 remoteExec [""d_fnc_getsidemission"", 2];";
+      precondition = "";
+      class Links
+      {
+      };
+    };
+  };
+  initState="Start";
+  finalStates[] =
+  {
+    "Clear_and_End",
+  };
+};

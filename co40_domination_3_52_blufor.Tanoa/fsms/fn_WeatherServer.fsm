@@ -1,0 +1,63 @@
+class FSM
+{
+  fsmName = "WeatherServer";
+  class States
+  {
+    class Start
+    {
+      name = "Start";
+      init = "private _wchange = time + 1800 + random 600;" \n
+       "" \n
+       "";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Change_Weather";
+          precondition = "";
+          condition="time > _wchange";
+          action="";
+        };
+      };
+    };
+    class Change_Weather
+    {
+      name = "Change_Weather";
+      init = "private _overCast = random 1;" \n
+       "" \n
+       "private _ransecs = 1800 + random 600;" \n
+       "_ransecs setOvercast _overCast;" \n
+       "_wchange = time + _ransecs;" \n
+       "" \n
+       "if (d_enable_fog == 0) then {" \n
+       "	private _fog = if (random 100 > 90) then {" \n
+       "		[random 0.1, 0.1, 20 + (random 40)]" \n
+       "	} else {" \n
+       "		[0,0,0]" \n
+       "	};" \n
+       "	400 setFog _fog;" \n
+       "} else {" \n
+       "	0 setFog [0,0,0];" \n
+       "};" \n
+       "";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Change_Weather";
+          precondition = "";
+          condition="time > _wchange";
+          action="";
+        };
+      };
+    };
+  };
+  initState="Start";
+  finalStates[] =
+  {
+  };
+};

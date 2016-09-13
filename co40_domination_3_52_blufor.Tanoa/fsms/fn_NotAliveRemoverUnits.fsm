@@ -1,0 +1,200 @@
+class FSM
+{
+  fsmName = "NotAliveRemoverUnits";
+  class States
+  {
+    class Start
+    {
+      name = "Start";
+      init = "private _timenow = time + 200;" \n
+       "private _allDead = [];";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time > _timenow";
+          action="";
+        };
+      };
+    };
+    class Loop
+    {
+      name = "Loop";
+      init = "";
+      precondition = "";
+      class Links
+      {
+        class Is_MP
+        {
+          priority = 1.000000;
+          to="Sleep";
+          precondition = "";
+          condition="isMultiplayer && {(call d_fnc_PlayersNumber) == 0}";
+          action="";
+        };
+        class true
+        {
+          priority = 0.000000;
+          to="Add_new";
+          precondition = "";
+          condition="";
+          action="";
+        };
+      };
+    };
+    class Sleep
+    {
+      name = "Sleep";
+      init = "_timenow = time + 2.38;";
+      precondition = "";
+      class Links
+      {
+        class Delay2
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time >= _timenow";
+          action="";
+        };
+      };
+    };
+    class Add_new
+    {
+      name = "Add_new";
+      init = "private _counter = 0;" \n
+       "" \n
+       "if !(allDeadMen isEqualTo []) then {" \n
+       "	{" \n
+       "		if (!isNull _x) then {" \n
+       "			if (_x isKindOf ""Animal_Base_F"") then {" \n
+       "				deleteVehicle _x;" \n
+       "			} else {" \n
+       "				_allDead pushBackUnique _x;" \n
+       "			};" \n
+       "		};" \n
+       "	} forEach allDeadMen;" \n
+       "	_allDead = _allDead - [objNull];" \n
+       "};" \n
+       "" \n
+       "_timenow = time + 10;" \n
+       "";
+      precondition = "";
+      class Links
+      {
+        class count__allDead_
+        {
+          priority = 1.000000;
+          to="Check_Loop";
+          precondition = "";
+          condition="count _allDead > 15";
+          action="";
+        };
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time > _timenow";
+          action="";
+        };
+      };
+    };
+    class Check_Loop
+    {
+      name = "Check_Loop";
+      init = "";
+      precondition = "";
+      class Links
+      {
+        class _counter_____count
+        {
+          priority = 1.000000;
+          to="Clear_array";
+          precondition = "";
+          condition="_counter >= (count _allDead - 15)";
+          action="";
+        };
+        class true
+        {
+          priority = 0.000000;
+          to="Check_one_object";
+          precondition = "";
+          condition="";
+          action="";
+        };
+      };
+    };
+    class Clear_array
+    {
+      name = "Clear_array";
+      init = "_allDead = _allDead - [-1, objNull];" \n
+       " " \n
+       "_meepmeep = false;" \n
+       "{" \n
+       "	if (isNil ""_x"") then {" \n
+       "		_allDead set [_forEachIndex, -1];" \n
+       "		_meepmeep = true;" \n
+       "	};" \n
+       "} forEach _allDead;" \n
+       "" \n
+       "if (_meepmeep) then {" \n
+       "	_allDead = _allDead - [-1];" \n
+       "};" \n
+       "" \n
+       "_timenow = time + 10;";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time > _timenow";
+          action="";
+        };
+      };
+    };
+    class Check_one_object
+    {
+      name = "Check_one_object";
+      init = "private _element = _allDead select _counter;" \n
+       "" \n
+       "if (!isNil ""_element"") then {" \n
+       "	if (isNull _element) then {" \n
+       "		deleteVehicle _element;" \n
+       "		_allDead set [_counter, -1];" \n
+       "	} else {" \n
+       "		if (!alive _element && {!isPlayer _element}) then {" \n
+       "			deleteVehicle _element;" \n
+       "			_allDead set [_counter, -1];" \n
+       "		};" \n
+       "	};" \n
+       "};" \n
+       "" \n
+       "_counter = _counter + 1;" \n
+       "_timenow = time + 2 + random 1;";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Check_Loop";
+          precondition = "";
+          condition="time >= _timenow";
+          action="";
+        };
+      };
+    };
+  };
+  initState="Start";
+  finalStates[] =
+  {
+  };
+};

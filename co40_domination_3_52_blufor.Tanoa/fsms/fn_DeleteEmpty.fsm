@@ -1,0 +1,93 @@
+class FSM
+{
+  fsmName = "DeleteEmpty";
+  class States
+  {
+    class Start
+    {
+      name = "Start";
+      init = "params [""_tpos""];" \n
+       "private _tradius = (param [1]) param[0];" \n
+       "private _del_camps_stuff = param[2];" \n
+       "" \n
+       "private _delpos =+ _tpos;" \n
+       "" \n
+       "private _delfirebase_objects =+ d_del_mtd_objects;" \n
+       "_delfirebase_objects append _del_camps_stuff;" \n
+       "" \n
+       "private _del_house_objects =+ d_house_objects;" \n
+       "" \n
+       "{" \n
+       "	_delfirebase_objects pushBackUnique _x;" \n
+       "	_x setVariable [""d_v_p_mt_t"", getPosATL _x];" \n
+       "} forEach d_delvecsmt;" \n
+       "" \n
+       "private _endtime = time + 120 + (random 60);";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="End";
+          precondition = "";
+          condition="time > _endtime";
+          action="";
+        };
+      };
+    };
+    class End
+    {
+      name = "End";
+      init = "private _vecs = [];" \n
+       "switch (d_enemy_side_short) do {" \n
+       "	case ""E"" : {{_vecs append _x} forEach d_veh_a_E};" \n
+       "	case ""W"" : {{_vecs append _x} forEach d_veh_a_W};" \n
+       "	case ""G"" : {{_vecs append _x} forEach d_veh_a_G};" \n
+       "};" \n
+       "" \n
+       "private _no =_delpos nearEntities [_vecs, _tradius];" \n
+       "" \n
+       "if !(_no isEqualTo []) then {" \n
+       "	{" \n
+       "		if (!isNull _x && {{alive _x} count (crew _x) == 0}) then {" \n
+       "			deleteVehicle _x;" \n
+       "		};" \n
+       "	} forEach _no;" \n
+       "};" \n
+       "" \n
+       "_no = nil;" \n
+       "" \n
+       "if !(_delfirebase_objects isEqualTo []) then {" \n
+       "	{" \n
+       "		if (!isNull _x) then {" \n
+       "			_d_v_p_mt_t = _x getVariable ""d_v_p_mt_t"";" \n
+       "			if (isNil ""_d_v_p_mt_t"") then {" \n
+       "				deleteVehicle _x;" \n
+       "			} else {" \n
+       "				if (_x distance2D _d_v_p_mt_t < 100) then {" \n
+       "					deleteVehicle _x;" \n
+       "				};" \n
+       "			};" \n
+       "		};" \n
+       "	} forEach _delfirebase_objects;" \n
+       "};" \n
+       "" \n
+       "{" \n
+       "	_x setDamage 0;" \n
+       "} forEach _del_house_objects;" \n
+       "" \n
+       "_delfirebase_objects = nil;" \n
+       "_del_house_objects = nil;";
+      precondition = "";
+      class Links
+      {
+      };
+    };
+  };
+  initState="Start";
+  finalStates[] =
+  {
+    "End",
+  };
+};

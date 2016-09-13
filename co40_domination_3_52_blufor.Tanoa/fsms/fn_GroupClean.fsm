@@ -1,0 +1,136 @@
+class FSM
+{
+  fsmName = "GroupClean";
+  class States
+  {
+    class Start
+    {
+      name = "Start";
+      init = "private _timenow = time + 120;" \n
+       "";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time > _timenow";
+          action="";
+        };
+      };
+    };
+    class Loop
+    {
+      name = "Loop";
+      init = "private _timenow2 = time + 5.33;";
+      precondition = "";
+      class Links
+      {
+        class __count__allGroups
+        {
+          priority = 1.000000;
+          to="Check";
+          precondition = "";
+          condition="!(allGroups isEqualTo [])";
+          action="";
+        };
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time > _timenow2";
+          action="";
+        };
+      };
+    };
+    class Check
+    {
+      name = "Check";
+      init = "private _allgroups =+ allGroups;" \n
+       "private _counter = 0;";
+      precondition = "";
+      class Links
+      {
+        class _
+        {
+          priority = 0.000000;
+          to="Loop2";
+          precondition = "";
+          condition="";
+          action="";
+        };
+      };
+    };
+    class Loop2
+    {
+      name = "Loop2";
+      init = "private _onegrp = _allgroups select _counter;" \n
+       "if (!isNull _onegrp) then {" \n
+       "	_gstate = _onegrp getVariable ""d_gstate"";" \n
+       "	if (!isNil ""_gstate"" && {_gstate > 0} && {(units _onegrp) isEqualTo []}) then {" \n
+       "		deleteGroup _onegrp;" \n
+       "	} else {" \n
+       "		if (d_IS_HC_CLIENT || {!isNil ""HC_D_UNIT""}) exitWith {};" \n
+       "		if (!isNil {_onegrp getVariable ""d_fromHC""}) then {" \n
+       "			{" \n
+       "				if (!alive _x) then {deleteVehicle _x};" \n
+       "			} forEach (units _onegrp);" \n
+       "			if ((units _onegrp) isEqualTo []) then {" \n
+       "				deleteGroup _onegrp;" \n
+       "			} else {" \n
+       "				d_allunits_ai_add append (units _onegrp);" \n
+       "				_onegrp setVariable [""d_gstate"", 1];" \n
+       "			};" \n
+       "		};" \n
+       "	};" \n
+       "};" \n
+       "_counter = _counter + 1;" \n
+       "_timenow = time + 2.57;";
+      precondition = "";
+      class Links
+      {
+        class ___counter____count
+        {
+          priority = 1.000000;
+          to="_";
+          precondition = "";
+          condition="(_counter == count _allgroups)";
+          action="";
+        };
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop2";
+          precondition = "";
+          condition="time > _timenow";
+          action="";
+        };
+      };
+    };
+    class _
+    {
+      name = "_";
+      init = "_allgroups = nil;" \n
+       "_timenow = time + 20;";
+      precondition = "";
+      class Links
+      {
+        class Delay
+        {
+          priority = 0.000000;
+          to="Loop";
+          precondition = "";
+          condition="time > _timenow";
+          action="";
+        };
+      };
+    };
+  };
+  initState="Start";
+  finalStates[] =
+  {
+  };
+};
