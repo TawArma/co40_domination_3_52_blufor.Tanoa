@@ -1,16 +1,6 @@
-/*
-	Author: Sidthesloth
+//Generate Date: 06/25/2015 10:29:58
 
-	Description:
-	Gets all TAW members UID's
-
-	Parameter(s):
-		0 (Optional): NONE
-
-	Returns:
-	NONE
-*/
-_tawMembersSteamIds = [
+masterUIDArray = [
 	"_SP_PLAYER_",
 	"76561198041910482", //Siddy
 	"76561198084983522", //MaverickSabre [AM DC]
@@ -90,4 +80,5 @@ _tawMembersSteamIds = [
 	"76561198046231875", //Samblues [AM 2CO]
 	"76561197994019865" //SOFF [SOCOP]
 ];
-_tawMembersSteamIds;
+
+publicVariable "masterUIDArray";

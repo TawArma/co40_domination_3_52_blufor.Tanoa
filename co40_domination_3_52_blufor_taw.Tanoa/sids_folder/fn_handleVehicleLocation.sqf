@@ -42,10 +42,10 @@ switch (_position) do {
       if(_forceTAW) then {
           _taw_member = [] call SID_FNC_isTAW;
         if(!_taw_member) then {
-            nul = [parseText("<t color='#ff0000'>You must be a member of TAW(TAW.net)</t>")] spawn BIS_fnc_dynamicText;
+            nul = [parseText("<t color='#ff0000'>You must be a member of TAW(TAW.net) to use this vehicle</t>")] spawn BIS_fnc_dynamicText;
             player action ["GetOut",vehicle player];
         }else{
-          nul = [parseText format["<t color='#00cc00'>Welcome </t>%1<t color='#00cc00'> these jets are for TAW members only</t>", name player]] spawn BIS_fnc_dynamicText;
+          nul = [parseText format["<t color='#00cc00'>Welcome </t>%1<t color='#00cc00'> this vehicle is for TAW members only</t>", name player]] spawn BIS_fnc_dynamicText;
         };
 
       };
@@ -55,10 +55,10 @@ switch (_position) do {
       if(_forceTAW) then {
           _taw_member = [] call SID_FNC_isTAW;
         if(!_taw_member) then {
-          nul = [parseText("<t color='#ff0000'>You must be a member of TAW(TAW.net)</t>")] spawn BIS_fnc_dynamicText;
+          nul = [parseText("<t color='#ff0000'>You must be a member of TAW(TAW.net) to use this vehicle</t>")] spawn BIS_fnc_dynamicText;
             player action ["GetOut",vehicle player];
         }else{
-          nul = [parseText format["<t color='#00cc00'>Welcome </t>%1<t color='#00cc00'> these jets are for TAW members only</t>", name player]] spawn BIS_fnc_dynamicText;
+          nul = [parseText format["<t color='#00cc00'>Welcome </t>%1<t color='#00cc00'> this vehicle is for TAW members only</t>", name player]] spawn BIS_fnc_dynamicText;
         };
 
       };
@@ -68,10 +68,10 @@ switch (_position) do {
       if(_forceTAW) then {
           _taw_member = [] call SID_FNC_isTAW;
         if(!_taw_member) then {
-          nul = [parseText("<t color='#ff0000'>You must be a member of TAW(TAW.net)</t>")] spawn BIS_fnc_dynamicText;
+          nul = [parseText("<t color='#ff0000'>You must be a member of TAW(TAW.net) to use this vehicle</t>")] spawn BIS_fnc_dynamicText;
             player action ["GetOut",vehicle player];
         }else{
-          nul = [parseText format["<t color='#00cc00'>Welcome </t>%1<t color='#00cc00'> these jets are for TAW members only</t>", name player]] spawn BIS_fnc_dynamicText;
+          nul = [parseText format["<t color='#00cc00'>Welcome </t>%1<t color='#00cc00'> this vehicle is for TAW members only</t>", name player]] spawn BIS_fnc_dynamicText;
         };
 
       };

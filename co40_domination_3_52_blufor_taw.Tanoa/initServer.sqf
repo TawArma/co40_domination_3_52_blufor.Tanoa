@@ -4,3 +4,4 @@
 diag_log [diag_frameno, diag_ticktime, time, "Executing MPF initServer.sqf"];
 ["Initialize", [true]] call BIS_fnc_dynamicGroups;
 diag_log [diag_frameno, diag_ticktime, time, "MPF initServer.sqf processed"];
+#include "\userconfig\tawdomi\masteruidlist.sqf";
